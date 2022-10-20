@@ -12,15 +12,13 @@ public class StudentSolution : MonoBehaviour
 
     public List<Vector2> movesGraph = new List<Vector2>();
     public int[,] ObstacleMap;
-    public Dropdown dropdown;
-    public Dropdown dropdowndirection;
     public Dropdown dropdownmoves;
     public int direction;
 
     [HideInInspector] public bool SolutionFound;
     [HideInInspector] public float envirement;
 
-    public int maxMoves;
+    public int maxGenerations;
 
     [HideInInspector] public int moves;
 
@@ -34,74 +32,42 @@ public class StudentSolution : MonoBehaviour
 
         envirement = 0.9f;
         direction = 0;
-        maxMoves = 5000;
+        maxGenerations = 600;
     }
 
     public void GenerateValuesArray()
     {
-        /*RobotEngine test = new RobotEngine(35, 45, 5, 7, 30, 40, direction, envirement, maxMoves);
-        test.Solution();
-        test.print_robot_moves_map();
-
-        movesGraph = test.GetBoardMoves();
-        ObstacleMap = test.GetBoard();
-        SolutionFound = test.GetSolutionFound();
-        moves = test.GetMoves();*/
-        Debug.Log("Called test");
-        Population test = new Population(0.7f, 0.1f, 10, 100);
+        
+        Population test = new Population(0.7f, 0.1f, 10,10, maxGenerations);
         ObstacleMap = test.CityAreaGrid;
 
         GameManager.Instance.ChangeState(GameState.GenerateGrid);
     }
 
-    public void SetEnvirement()
-    {
-        switch (dropdown.value)
-        {
-            case 0:
-                envirement = 0.90f;
-                break;
-            case 1:
-                envirement = 0.8f;
-                break;
-            case 2:
-                envirement = 0.55f;
-                break;
-            default:
-                envirement = 0.9f;
-                break;
-        }
-    }
-
-    public void SetDirection()
-    {
-        direction = dropdowndirection.value;
-    }
-
-    public void SetMaxMoves()
+    public void SetMaxGenerations()
     {
         switch (dropdownmoves.value)
         {
             case 0:
-                maxMoves = 5000;
+                maxGenerations = 600;
                 break;
             case 1:
-                maxMoves = 4000;
+                maxGenerations = 500;
                 break;
             case 2:
-                maxMoves = 3000;
+                maxGenerations = 400;
                 break;
             case 3:
-                maxMoves = 2000;
+                maxGenerations = 300;
                 break;
             case 4:
-                maxMoves = 1000;
+                maxGenerations = 200;
                 break;
             case 5:
-                maxMoves = 100;
+                maxGenerations = 100;
                 break;
             default:
-                maxMoves = 5000;
+                maxGenerations = 600;
                 break;
         }
     }
