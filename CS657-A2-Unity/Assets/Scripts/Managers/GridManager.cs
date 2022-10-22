@@ -30,6 +30,7 @@ public class GridManager : MonoBehaviour {
                 
                 var spawnedTile = Instantiate(randomTile, new Vector3(x, y), Quaternion.identity);
                 spawnedTile.name = $"Tile {x} {y}";
+                //spawnedTile.transform.rotation = Quaternion.Euler(0,0,90);
 
               
                 spawnedTile.Init(x,y);

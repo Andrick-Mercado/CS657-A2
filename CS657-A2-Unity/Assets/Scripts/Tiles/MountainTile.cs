@@ -4,5 +4,11 @@ using UnityEngine;
 
 public class MountainTile : Tile
 {
-    
+    [SerializeField] private Color _baseColor, _offsetColor;
+    public override void Init(int x, int y) {
+        var isOffset = (x + y) % 2 == 1;
+        _renderer.color = isOffset ? _offsetColor : _baseColor;
+        
+        transform.rotation = Quaternion.Euler(0,0,90);
+    }
 }

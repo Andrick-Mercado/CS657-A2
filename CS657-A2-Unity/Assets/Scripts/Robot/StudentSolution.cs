@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using GeneticAlgorithm;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,15 +13,14 @@ public class StudentSolution : MonoBehaviour
 
     public List<Vector2> movesGraph = new List<Vector2>();
     public int[,] ObstacleMap;
-    public Dropdown dropdown;
-    public Dropdown dropdowndirection;
     public Dropdown dropdownmoves;
     public int direction;
+    public LineRenderer lineRenderer;
 
     [HideInInspector] public bool SolutionFound;
     [HideInInspector] public float envirement;
 
-    public int maxMoves;
+    public int maxGenerations;
 
     [HideInInspector] public int moves;
 
@@ -34,74 +34,55 @@ public class StudentSolution : MonoBehaviour
 
         envirement = 0.9f;
         direction = 0;
-        maxMoves = 5000;
+        maxGenerations = 600;
+        lineRenderer = GetComponent<LineRenderer>();
     }
 
     public void GenerateValuesArray()
     {
-        /*RobotEngine test = new RobotEngine(35, 45, 5, 7, 30, 40, direction, envirement, maxMoves);
-        test.Solution();
-        test.print_robot_moves_map();
-
-        movesGraph = test.GetBoardMoves();
-        ObstacleMap = test.GetBoard();
-        SolutionFound = test.GetSolutionFound();
-        moves = test.GetMoves();*/
-        Debug.Log("Called test");
-        Population test = new Population(0.7f, 0.1f, 10, 100);
+        // change the house creation outside of class so we can give it as an input to each warehouse
+        // make warehouse location a given variable to create the class
+        // compare best fitness to each warehouse and remove values accordingly (maybe: make to list )
+        
+        Population test = new Population(0.7f, 0.5f, 20, 10000);
         ObstacleMap = test.CityAreaGrid;
 
+        Vector2[] otherTest = test.GetPopulation();
+        lineRenderer.positionCount = otherTest.Length+2;
+        lineRenderer.SetPosition(0, new Vector3(10f,5f, 0f));
+        for (int i = 1; i <= lineRenderer.positionCount-2; i++)
+        {
+            lineRenderer.SetPosition(i, new Vector3(otherTest[i-1].x,otherTest[i-1].y, 0f));
+        }
+        lineRenderer.SetPosition(lineRenderer.positionCount-1, new Vector3(10f,5f, 0f));
+            
         GameManager.Instance.ChangeState(GameState.GenerateGrid);
     }
 
-    public void SetEnvirement()
-    {
-        switch (dropdown.value)
-        {
-            case 0:
-                envirement = 0.90f;
-                break;
-            case 1:
-                envirement = 0.8f;
-                break;
-            case 2:
-                envirement = 0.55f;
-                break;
-            default:
-                envirement = 0.9f;
-                break;
-        }
-    }
-
-    public void SetDirection()
-    {
-        direction = dropdowndirection.value;
-    }
-
-    public void SetMaxMoves()
+    public void SetMaxGenerations()
     {
         switch (dropdownmoves.value)
         {
             case 0:
-                maxMoves = 5000;
+                maxGenerations = 600;
                 break;
             case 1:
-                maxMoves = 4000;
+                maxGenerations = 500;
                 break;
             case 2:
-                maxMoves = 3000;
+                maxGenerations = 400;
                 break;
             case 3:
-                maxMoves = 2000;
+                maxGenerations = 300;
                 break;
             case 4:
-                maxMoves = 1000;
+                maxGenerations = 200;
                 break;
             case 5:
-                maxMoves = 100;
+                maxGenerations = 100;
                 break;
             default:
-                maxMoves = 5000;
+                maxGenerations = 600;
                 break;
         }
     }

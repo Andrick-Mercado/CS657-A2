@@ -29,12 +29,12 @@ public class UnitManager : MonoBehaviour {
     {
         var randomPrefab = GetRandomUnit<BaseHero>(Faction.Hero);
         //var robotFixedPos = GetFixedRotationRobot(StudentSolution.Instance.direction);
-        var spawnedHero = Instantiate(randomPrefab,new Vector3(5f,7f,-1f), Quaternion.Euler(0,0,90));
+        var spawnedHero = Instantiate(randomPrefab,new Vector3(10f,5f,-1f), Quaternion.Euler(0,0,90));
         tankPlayer = spawnedHero;
         //for random position
         /*var randomSpawnTile = GridManager.Instance.GetHeroSpawnTile();
         randomSpawnTile.SetUnit(spawnedHero);*/
-        var randomSpawnTile = GridManager.Instance.GetTileAtPosition(new Vector2(5f,7f) );
+        var randomSpawnTile = GridManager.Instance.GetTileAtPosition(new Vector2(10f,5f) );
         randomSpawnTile.SetUnit(spawnedHero);
         
         //GameManager.Instance.ChangeState(GameState.SpawnEnemies);
