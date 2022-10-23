@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour
                 UnitManager.Instance.SpawnHeroes();
                 break;
             case GameState.SpawnEnemies:
-                UnitManager.Instance.SpawnEnemies();
+                StudentSolution.Instance.GeneratePlot();
                 break;
             case GameState.StartMoving:
                 StartCoroutine(UnitManager.Instance.StartMovingTank());

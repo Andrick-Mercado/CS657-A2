@@ -18,6 +18,7 @@ public class StudentSolution : MonoBehaviour
     public int direction;
     public LineRenderer lineRendererWarehouseA;
     public LineRenderer LineRendererWarehouseB;
+    public GameObject ImGuiGameObject;
 
     [HideInInspector] public bool SolutionFound;
     [HideInInspector] public float envirement;
@@ -25,6 +26,8 @@ public class StudentSolution : MonoBehaviour
     public int maxGenerations;
 
     [HideInInspector] public int moves;
+    [HideInInspector] public float[] FitnessArrayWarehouseA;
+    [HideInInspector] public float[] FitnessArrayWarehouseB;
     
     private int[,] _cityAreaGrid;// holds all grid information
     private Vector2[] _genes;// all house locations
@@ -44,6 +47,7 @@ public class StudentSolution : MonoBehaviour
         envirement = 0.9f;
         direction = 0;
         maxGenerations = 600;
+        ImGuiGameObject.SetActive(false);
     }
 
     public void GenerateValuesArray()
@@ -53,16 +57,25 @@ public class StudentSolution : MonoBehaviour
 
         GenerateHouses(45);
             
-        Population warehouseRouteA = new Population(0.7f, 0.5f, 20, 10000, warehouseA, _genes);
-        Population warehouseRouteB = new Population(0.7f, 0.5f, 20, 10000, warehouseB, _genes);
+        Population warehouseRouteA = new Population(0.7f, 0.5f, 20, maxGenerations, warehouseA, _genes);
+        Population warehouseRouteB = new Population(0.7f, 0.5f, 20, maxGenerations, warehouseB, _genes);
         
         _fittestWarehouseA = new List<Vector2>(warehouseRouteA.GetPopulation());
         _fittestWarehouseB = new List<Vector2>(warehouseRouteB.GetPopulation());
         
+        FitnessArrayWarehouseA = warehouseRouteA.GetFitnessArray();
+        FitnessArrayWarehouseB = warehouseRouteB.GetFitnessArray();
+        
         CalculateFitnessWarehouses(warehouseA, warehouseB);
+        UpdateFitness(warehouseA, warehouseB);
         GenerateLines();
             
         GameManager.Instance.ChangeState(GameState.GenerateGrid);
+    }
+
+    public void GeneratePlot()
+    {
+        ImGuiGameObject.SetActive(true);
     }
 
     private void GenerateHouses(int numHouses)
@@ -88,6 +101,36 @@ public class StudentSolution : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void UpdateFitness(Vector2 warehouseA, Vector2 warehouseB)
+    {
+        float currentFitnessA = 0f;
+            
+        if (_fittestWarehouseA.Count >=1)
+            currentFitnessA+= Vector2.Distance(warehouseA, _fittestWarehouseA[0]); 
+            
+        for (int i = 1; i < _fittestWarehouseA.Count; i++)
+        {//iterate through genes to calculate their fitness
+            currentFitnessA += Vector2.Distance(_fittestWarehouseA[i-1], _fittestWarehouseA[i]); 
+        }
+        currentFitnessA += Vector2.Distance(_fittestWarehouseA[_fittestWarehouseA.Count-1], warehouseA);
+
+        FitnessArrayWarehouseA[FitnessArrayWarehouseA.Length - 1] = currentFitnessA;
+        
+        // fitness warehouse B
+        float currentFitnessB = 0f;
+            
+        if (_fittestWarehouseB.Count >=1)
+            currentFitnessB+= Vector2.Distance(warehouseB, _fittestWarehouseB[0]); 
+            
+        for (int i = 1; i < _fittestWarehouseB.Count; i++)
+        {//iterate through genes to calculate their fitness
+            currentFitnessB += Vector2.Distance(_fittestWarehouseB[i-1], _fittestWarehouseB[i]); 
+        }
+        currentFitnessB += Vector2.Distance(_fittestWarehouseB[_fittestWarehouseB.Count-1], warehouseB);
+
+        FitnessArrayWarehouseB[FitnessArrayWarehouseB.Length - 1] = currentFitnessB;
     }
 
     private void CalculateFitnessWarehouses(Vector2 warehouseA, Vector2 warehouseB)

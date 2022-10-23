@@ -20,6 +20,7 @@ namespace GeneticAlgorithm
         private int _numChromosomes;
         //private int _numPopulation;
         private int _numGenerations;
+        private float[] fitnessArray;
         
         public int[,] CityAreaGrid => _cityAreaGrid;
 
@@ -36,12 +37,14 @@ namespace GeneticAlgorithm
             //initialize known information
             _population = new List<Chromosome>(); 
             _chromosomesChildren = new List<Chromosome>();
+            fitnessArray = new float[numGenerations + 1];
             /*_genes = new Vector2[45];
             _cityAreaGrid = new int[35, 35];
             _cityAreaGrid[10, 5] = 2;*/ // a 2 represents a warehouse on this array
             //GenerateHousesPositions(45); // create 45 houses
             GenerateRandomHousePopulation();
             CreateGenerations();
+            
         }
 
         private void GenerateHousesPositions(int numHouses)
@@ -100,6 +103,9 @@ namespace GeneticAlgorithm
                     
                 /*  lastly we clear the parents and copy in the children into the parent list  */
                 ChromosomeSwapPopulation();
+                
+                // update the fitness array
+                fitnessArray[_currentGeneration - 1] = _population[0].FitnessChromosome();
                 
                 _currentGeneration++;
             }
@@ -173,6 +179,11 @@ namespace GeneticAlgorithm
         public Vector2[] GetPopulation()
         {
             return _population[0].GetHouses();
+        }
+
+        public float[] GetFitnessArray()
+        {
+            return fitnessArray;
         }
     }
 }
