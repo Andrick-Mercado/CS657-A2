@@ -37,6 +37,13 @@ public class UnitManager : MonoBehaviour {
         var randomSpawnTile = GridManager.Instance.GetTileAtPosition(new Vector2(10f,5f) );
         randomSpawnTile.SetUnit(spawnedHero);
         
+
+        var randomPrefab2 = GetRandomUnit<BaseHero>(Faction.Hero);
+        var spawnedHero2 = Instantiate(randomPrefab2,new Vector3(25f,30f,-1f), Quaternion.Euler(0,0,90));
+        tankPlayer = spawnedHero2;
+        var randomSpawnTile2 = GridManager.Instance.GetTileAtPosition(new Vector2(25f,30f) );
+        randomSpawnTile2.SetUnit(spawnedHero2);
+        
         //GameManager.Instance.ChangeState(GameState.SpawnEnemies);
     }
 

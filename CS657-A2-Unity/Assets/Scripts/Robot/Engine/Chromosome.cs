@@ -11,13 +11,13 @@ namespace GeneticAlgorithm
         private Gene[] _genes;
         private Vector2[] _houses;
         private float _chromosomeFitness;
-        private Vector2 _warehouseA;
+        private Vector2 _warehouse;
         private float _probabilityMutate;
 
-        public Chromosome(Vector2[] housePositions, Vector2 warehouseA, float probabilityMutate, bool firstParent)
+        public Chromosome(Vector2[] housePositions, Vector2 warehouse, float probabilityMutate, bool firstParent)
         {
             //Debug.Log("called chromosome");
-            _warehouseA = warehouseA;
+            _warehouse = warehouse;
             _probabilityMutate = probabilityMutate;
             _houses = new Vector2[housePositions.Length];
             _genes = new Gene[housePositions.Length];
@@ -40,14 +40,14 @@ namespace GeneticAlgorithm
             float currentFitness = 0f;
             
             if (_genes.Length >=1)
-                currentFitness+= Vector2.Distance(_warehouseA, _genes[0].HousePosition()); 
+                currentFitness+= Vector2.Distance(_warehouse, _genes[0].HousePosition()); 
             
             for (int i = 1; i < _genes.Length; i++)
             {//iterate through genes to calculate their fitness
                 currentFitness += Vector2.Distance(_genes[i-1].HousePosition(), _genes[i].HousePosition()); 
             }
 
-            currentFitness += Vector2.Distance(_genes[_genes.Length-1].HousePosition(), _warehouseA);
+            currentFitness += Vector2.Distance(_genes[_genes.Length-1].HousePosition(), _warehouse);
             _chromosomeFitness = currentFitness;
             return currentFitness;
         }

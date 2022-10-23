@@ -9,7 +9,7 @@ namespace GeneticAlgorithm
 {
     public class Population
     {
-        private Vector2 _warehouseA = new Vector2(10, 5);
+        private Vector2 _warehouse;// = new Vector2(10, 5);
         private List<Chromosome> _population; // parent container
         private List<Chromosome> _chromosomesChildren; // children container
         private Vector2[] _genes;// all house locations
@@ -23,21 +23,23 @@ namespace GeneticAlgorithm
         
         public int[,] CityAreaGrid => _cityAreaGrid;
 
-        public Population(float pCrossover, float pMutation, int numChromosomes, int numGenerations)
+        public Population(float pCrossover, float pMutation, int numChromosomes, int numGenerations, Vector2 warehouse, Vector2[] genes)
         {
             _pCrossOver = pCrossover;
             _pMutation = pMutation;
             _numChromosomes = numChromosomes;
+            _warehouse = warehouse;
+            _genes = genes;
             //_numPopulation = numPopulation;
             _numGenerations = numGenerations;
 
             //initialize known information
             _population = new List<Chromosome>(); 
             _chromosomesChildren = new List<Chromosome>();
-            _genes = new Vector2[45];
+            /*_genes = new Vector2[45];
             _cityAreaGrid = new int[35, 35];
-            _cityAreaGrid[10, 5] = 2; // a 2 represents a warehouse on this array
-            GenerateHousesPositions(45); // create 45 houses
+            _cityAreaGrid[10, 5] = 2;*/ // a 2 represents a warehouse on this array
+            //GenerateHousesPositions(45); // create 45 houses
             GenerateRandomHousePopulation();
             CreateGenerations();
         }
@@ -69,7 +71,7 @@ namespace GeneticAlgorithm
             for (int i = 0; i < _numChromosomes; i++)
             {// sort _genes randomly
                 _genes = RandomGenes(_genes);
-                _population.Add(new Chromosome(_genes, _warehouseA, _pMutation, true)); 
+                _population.Add(new Chromosome(_genes, _warehouse, _pMutation, true)); 
             }
         }
 
@@ -113,7 +115,7 @@ namespace GeneticAlgorithm
             s = _numChromosomes % 2 == 0 ? s+1 : s;
             for(int i = 0;i<s;i++)
             {
-                Chromosome elite = new Chromosome(_population[i].GetHouses(), _warehouseA, _pMutation, false);
+                Chromosome elite = new Chromosome(_population[i].GetHouses(), _warehouse, _pMutation, false);
                 _chromosomesChildren.Add(elite);
             }
   
@@ -127,8 +129,8 @@ namespace GeneticAlgorithm
                 Chromosome parent2 = _population[r];
                 List<Chromosome> offspring = parent1.OrderCrossover(parent2);// perform crossover and produce one offspring
 
-                Chromosome offspring1 = new Chromosome(offspring[0].GetHouses(), _warehouseA, _pMutation, false);
-                Chromosome offspring2 = new Chromosome(offspring[1].GetHouses(), _warehouseA, _pMutation, false);
+                Chromosome offspring1 = new Chromosome(offspring[0].GetHouses(), _warehouse, _pMutation, false);
+                Chromosome offspring2 = new Chromosome(offspring[1].GetHouses(), _warehouse, _pMutation, false);
                 _chromosomesChildren.Add(offspring1);//offspring[0]);
                 _chromosomesChildren.Add(offspring2);//offspring[1]);
             } 

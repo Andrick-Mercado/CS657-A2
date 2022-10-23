@@ -26,7 +26,7 @@ public class GridManager : MonoBehaviour {
         {
             for (int y = 0; y < _height; y++) 
             {
-                var randomTile = StudentSolution.Instance.ObstacleMap[x,y] == 1 ? _mountainTile : _grassTile;
+                var randomTile = StudentSolution.Instance.CityAreaGrid[x,y] == 1 ? _mountainTile : _grassTile;
                 
                 var spawnedTile = Instantiate(randomTile, new Vector3(x, y), Quaternion.identity);
                 spawnedTile.name = $"Tile {x} {y}";
