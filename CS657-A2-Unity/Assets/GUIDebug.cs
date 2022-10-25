@@ -1,5 +1,6 @@
 using System;
 using System.Globalization;
+using System.IO;
 using ImGuiNET;
 using UnityEngine;
 using ImPlotNET;
@@ -13,6 +14,8 @@ public class GUIDebug : MonoBehaviour
 
     private float[] fitnessA;
     private float[] fitnessB;
+    private float fitnessAValue;
+    private float fitnessBValue;
 
     private void Awake()
     {
@@ -31,6 +34,26 @@ public class GUIDebug : MonoBehaviour
     {
         fitnessA = StudentSolution.Instance.FitnessArrayWarehouseA;
         fitnessB = StudentSolution.Instance.FitnessArrayWarehouseB;
+        fitnessAValue = fitnessA[^1];
+        fitnessBValue = fitnessB[^1];
+        
+        //print out here to file
+         
+        var  fileName = "fitnessA.txt";
+        var sr = File.CreateText(fileName);
+        foreach (var tmp in fitnessA)
+        {
+            sr.WriteLine ("{0},", tmp);
+        }
+        sr.Close();
+        
+        var  fileName2 = "fitnessB.txt";
+        var src = File.CreateText(fileName2);
+        foreach (var tmp in fitnessB)
+        {
+            src.WriteLine ("{0},", tmp);
+        }
+        src.Close();
     }
 
     private void OnLayout(UImGui.UImGui obj)
@@ -42,12 +65,16 @@ public class GUIDebug : MonoBehaviour
             ImGui.Text("Average fitness Warehouse A not normalized");
             ImGui.PlotLines("AVG fitness WA", ref fitnessA[0], fitnessA.Length, 5, null, 0, 1100,
                 new Vector2(0, 80.0f));
+            ImGui.Text($"Average fitness Warehouse A normalized: {fitnessAValue}");
+            
+            ImGui.Indent();
 
             ImGui.Text("Average fitness Warehouse B not normalized");
             ImGui.PlotLines("AVG fitness WB", ref fitnessB[0], fitnessB.Length, 5, null, 100, 1100,
                 new Vector2(0, 80.0f));
-
+            ImGui.Text($"Average fitness Warehouse B normalized: {fitnessBValue}");
             
+
             ImGui.End();
         }
         //ImPlot.ShowDemoWindow();

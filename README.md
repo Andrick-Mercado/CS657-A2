@@ -1,6 +1,7 @@
 # CS657-A1
 CS 657 Intelligent Systems - Assignment 2 Genetic Algoirthm to optimize a path
 By Andrick Mercado
+Email: amercado3310@sdsu.edu
 -----------------------------------------------------------------------------------------------
 Task:
 * The purpose of this assignment is to develop a program to solve the above problem using genetic 
@@ -12,14 +13,15 @@ Notes:
 * 
 -----------------------------------------------------------------------------------------------
 How To Run:
-* 
+* If output is UI go under the Build folder and run the "CS657-A1-Unity.exe" , 
+once opened click on run
+* If output is wanted in graphs go under graphing and open "CS657-A2-JupyterNotebooks.ipynb"
+if graphs dont appear clock on trust and if not just run all cells
 -----------------------------------------------------------------------------------------------
 Other Folders:
-* the first folder contains all the code used to make the user interface called "CS657-A2-Unity"
-* The folder called "Example Output" contains txt files which are outputs files the program has 
-made when executed on my machine
+* the folder "CS657-A2-Unity" contains all the code as well as the unity data
 -----------------------------------------------------------------------------------------------
-UI example:
-
-Noy finished yet
+example of interface: go to the "Report.pdf"
+-----------------------------------------------------------------------------------------------
+IMPORTANT: I did not do test on Mac nor linux so if it doesnt work send me an email
 -----------------------------------------------------------------------------------------------
